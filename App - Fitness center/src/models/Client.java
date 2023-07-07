@@ -13,12 +13,12 @@ public class Client extends User implements Serializable {
     private String target;
     private String stateOfStrength;
 
-    public Client(String name, String userName, String passWord, int phone, int cccd, String address, String email, String gender) {
-        super(name, userName, passWord, phone, cccd, address, email, gender);
+    public Client(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender) {
+        super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
     }
 
-    public Client(String name, String userName, String passWord, int phone, int cccd, String address, String email, String gender, String role, double height, double weight, double bmi, String status, String target, String stateOfStrength) {
-        super(name, userName, passWord, phone, cccd, address, email, gender);
+    public Client(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender, String role, double height, double weight, double bmi, String status, String target, String stateOfStrength) {
+        super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
         this.role = role;
         this.height = height;
         this.weight = weight;

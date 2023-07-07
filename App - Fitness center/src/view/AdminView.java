@@ -2,13 +2,21 @@ package view;
 
 import utils.GetValue;
 
+import static view.TrainerView.trainerView;
+import static view.UserView.userView;
+
+
 public class AdminView {
-    public static int choose;
+    public static int choose = -1;
     public static void main(String[] args) {
         do {
             switch (adminMenu()) {
                 case 1:
-
+                    userView();
+                    break;
+                case 2:
+                    trainerView();
+                    break;
             }
         } while(choose != 0);
     }
@@ -22,9 +30,9 @@ public class AdminView {
         System.out.println("               |        3. Product               |");
         System.out.println("               |        4. Payment               |");
         System.out.println("               |        5. Updating              |");
-        System.out.println("               |        0. Exit to program       |");
+        System.out.println("               |        0. Back to program       |");
         System.out.println("               ===================================");
-        return GetValue.getInt( "Enter your choice:");
+        return choose = GetValue.getInt("Enter your choice:");
     }
 
 }

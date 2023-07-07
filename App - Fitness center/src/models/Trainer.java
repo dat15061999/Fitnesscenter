@@ -3,11 +3,12 @@ package models;
 import eNum.eRole;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Trainer extends User implements Serializable {
+    private static final long serialVersionUID = -340910112562114070L;
     private String role = String.valueOf(eRole.PT);
     private int salary;
-    private int dayOff;
     private double revenueBonus;
     private double totalPrice;
     private double exp;
@@ -15,17 +16,16 @@ public class Trainer extends User implements Serializable {
     private String skill;
     private String degree;
     private String coachingStyle;
-    private String schedule;
+    private String[] schedule;
 
-    public Trainer(String name, String userName, String passWord, int phone, int cccd, String address, String email, String gender) {
-        super(name, userName, passWord, phone, cccd, address, email, gender);
+    public Trainer(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender) {
+        super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
     }
 
-    public Trainer(String name, String userName, String passWord, int phone, int cccd, String address, String email, String gender, String role, int salary, int dayOff, double revenueBonus, double totalPrice, double exp, int level, String skill, String degree, String coachingStyle, String schedule) {
-        super(name, userName, passWord, phone, cccd, address, email, gender);
+    public Trainer(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender, String role, int salary, double revenueBonus, double totalPrice, double exp, int level, String skill, String degree, String coachingStyle, String[] schedule) {
+        super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
         this.role = role;
         this.salary = salary;
-        this.dayOff = dayOff;
         this.revenueBonus = revenueBonus;
         this.totalPrice = totalPrice;
         this.exp = exp;
@@ -50,14 +50,6 @@ public class Trainer extends User implements Serializable {
 
     public void setSalary(int salary) {
         this.salary = salary;
-    }
-
-    public int getDayOff() {
-        return dayOff;
-    }
-
-    public void setDayOff(int dayOff) {
-        this.dayOff = dayOff;
     }
 
     public double getRevenueBonus() {
@@ -113,11 +105,17 @@ public class Trainer extends User implements Serializable {
         this.coachingStyle = coachingStyle;
     }
 
-    public String getSchedule() {
+    public String[] getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(String schedule) {
+    public void setSchedule(String[] schedule) {
         this.schedule = schedule;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("| %-4d | %-17s | %-10s | %-10s | %-8s | %-20s | %-10s | %-8s | %-20s | %-10s | %-20s | %-15s | %-15s | %-20s | %-8s | %-10s | %-10s | %-10s |\n",
+                id, name, userName, passWord,String.valueOf(age), email, role, phone, address, gender, skill, degree, coachingStyle, Arrays.toString(schedule), level, exp, revenueBonus, totalPrice);
     }
 }

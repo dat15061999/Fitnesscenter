@@ -1,10 +1,10 @@
 package eNum;
 
-public enum eRole {
-    ADMIN("Admin"),CLIENT("Client"),PT("Trainer");
+public enum eCoachingStyle {
+    STRONG("Strong"),HEALTHY("Healthy"),YOUNG("Young"),MENLY("Menly");
     private final String name;
 
-    eRole(String name) {
+    eCoachingStyle(String name) {
         this.name = name;
     }
 

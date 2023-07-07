@@ -8,17 +8,16 @@ import utils.SerializationUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import static utils.GetValue.choose;
 
 public class AdminService implements CRUD<Admin> {
     public static List<Admin> adminList = new ArrayList<>();
-    public static AdminService adminService;
-    public static Admin admin;
+    public static String address = "E:\\App - Fitness center\\Fitnesscenter\\App - Fitness center\\src\\database\\admin.txt";
+
 
     @Override
     public void create(Admin admin) {
         admin.setId(admin.getId());
-        adminList.add(admin);
+        this.adminList.add(admin);
     }
 
     @Override
@@ -26,6 +25,7 @@ public class AdminService implements CRUD<Admin> {
         for (Admin admin: adminList) {
             if (idAdmin == admin.getId()) {
                 adminList.remove(admin);
+                System.out.println("Xoa admin co id la " + idAdmin + " thanh cong.");
                 break;
             }
         }
@@ -37,6 +37,7 @@ public class AdminService implements CRUD<Admin> {
                 admin.setName(GetValue.getString("Nhap ten moi :"));
                 admin.setUserName(GetValue.getString("Nhap userName :"));
                 admin.setPassWord(GetValue.getString("Nhap passWord :"));
+                admin.setAge(GetValue.getInt("Nhap tuoi"));
                 admin.setPhone(GetValue.getInt("Nhap so dien thoai"));
                 admin.setCccd(GetValue.getInt("Nhap cccd"));
                 admin.setAddress(GetValue.getString("Nhap dia chi"));
@@ -54,8 +55,14 @@ public class AdminService implements CRUD<Admin> {
     }
 
     @Override
-    public List<Admin> findAll() {
-        return adminList;
+    public List<Admin> readFile() {
+        this.adminList = (List<Admin>) SerializationUtil.deserialize(address);
+        return this.adminList;
+    }
+
+    @Override
+    public List<Admin> getAll() {
+        return this.adminList;
     }
 
 

@@ -1,7 +1,9 @@
 package models;
 
-public abstract class User {
-    public int idCurrent =0 ;
+import java.io.Serializable;
+
+public abstract class User implements Serializable {
+    public static int idCurrent =0 ;
     public int id;
     public String name;
     public String userName;
@@ -11,12 +13,16 @@ public abstract class User {
     public String address;
     public String email;
     public String gender;
+    public int age;
 
-    public User( String name, String userName, String passWord, int phone, int cccd, String address, String email, String gender) {
-        this.id = ++idCurrent;
+
+
+    public User(int id, String name, String userName, String passWord, int age, int phone, int cccd, String address, String email, String gender) {
+        this.id = id;
         this.name = name;
         this.userName = userName;
         this.passWord = passWord;
+        this.age = age;
         this.phone = phone;
         this.cccd = cccd;
         this.address = address;
@@ -24,6 +30,15 @@ public abstract class User {
         this.gender = gender;
     }
 
+    protected User() {
+    }
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
     public int getIdCurrent() {
         return idCurrent;
     }
@@ -102,5 +117,20 @@ public abstract class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", userName='" + userName + '\'' +
+                ", passWord='" + passWord + '\'' +
+                ", phone=" + phone +
+                ", cccd=" + cccd +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
     }
 }

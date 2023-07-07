@@ -5,13 +5,16 @@ import eNum.eRole;
 import java.io.Serializable;
 
 public class Admin extends User implements Serializable {
-    private String role = String.valueOf(eRole.ADMIN);
-    public Admin(String name, String userName, String passWord, int phone, int cccd, String address, String email, String gender) {
-        super(name, userName, passWord, phone, cccd, address, email, gender);
+    private static final long serialVersionUID = 3055276268292339966L;
+    static boolean headerAdded = false;
+    private static String role = String.valueOf(eRole.ADMIN);
+    public Admin() {}
+    public Admin(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender) {
+        super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
     }
 
-    public Admin(String name, String userName, String passWord, int phone, int cccd, String address, String email, String gender, String role) {
-        super(name, userName, passWord, phone, cccd, address, email, gender);
+    public Admin(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender, String role) {
+        super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
         this.role = role;
     }
 
@@ -25,18 +28,7 @@ public class Admin extends User implements Serializable {
 
     @Override
     public String toString() {
-        return "Admin{" +
-                "role='" + role + '\'' +
-                ", idCurrent=" + idCurrent +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", userName='" + userName + '\'' +
-                ", passWord='" + passWord + '\'' +
-                ", phone=" + phone +
-                ", cccd=" + cccd +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", gender='" + gender + '\'' +
-                '}';
+        return  String.format("| %-4d | %-15s | %-20s | %-20s |  %-8s  | %-30s | %-15s | %-8s | %-20s |",
+                id, name, userName, passWord,String.valueOf(age), email, role, phone, address);
     }
 }

@@ -7,5 +7,7 @@ public interface CRUD <T> {
     void delete(int id);
     void update(int id);
     void find();
-    List<T> findAll();
+    List<T> readFile();
+
+    List<T> getAll();
 }

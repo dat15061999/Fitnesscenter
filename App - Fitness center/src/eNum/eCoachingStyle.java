@@ -1,7 +1,7 @@
 package eNum;
 
 public enum eCoachingStyle {
-    STRONG("Strong"),HEALTHY("Healthy"),YOUNG("Young"),MENLY("Menly");
+    STRONG("Strong"),HEALTHY("Healthy"),YOUNG("Young"),MEN("Men");
     private final String name;
 
     eCoachingStyle(String name) {

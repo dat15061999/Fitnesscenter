@@ -1,17 +1,20 @@
 package view;
 
 import services.AdminService;
+import services.ClientService;
 import services.TrainerService;
 import utils.GetValue;
 
 
 import static services.UserService.adminView;
+import static view.ClientView.clientView;
 import static view.TrainerView.trainerView;
 
 
 public class UserView {
     private static AdminService adminService = new AdminService();
     private static TrainerService trainerService = new TrainerService();
+    private static ClientService clientService = new ClientService();
     public static int choose = -1;
 
     public static void main(String[] args) {
@@ -30,7 +33,8 @@ public class UserView {
                      trainerView();
                      break;
                  case 3:
-                     //clientService();
+                     clientService.readFile();
+                     clientView();
                      break;
              }
          }

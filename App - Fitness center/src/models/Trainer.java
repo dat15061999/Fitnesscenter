@@ -1,6 +1,7 @@
 package models;
 
 import eNum.eRole;
+import eNum.eStatusTrainer;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -17,12 +18,13 @@ public class Trainer extends User implements Serializable {
     private String degree;
     private String coachingStyle;
     private String[] schedule;
+    private String status ;
 
     public Trainer(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender) {
         super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
     }
 
-    public Trainer(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender, String role, int salary, double revenueBonus, double totalPrice, double exp, int level, String skill, String degree, String coachingStyle, String[] schedule) {
+    public Trainer(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender, String role, int salary, double revenueBonus, double totalPrice, double exp, String skill, String degree, String coachingStyle, String[] schedule) {
         super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
         this.role = role;
         this.salary = salary;
@@ -33,6 +35,7 @@ public class Trainer extends User implements Serializable {
         this.skill = skill;
         this.degree = degree;
         this.coachingStyle = coachingStyle;
+        this.status =  status;
         this.schedule = schedule;
     }
 
@@ -113,9 +116,18 @@ public class Trainer extends User implements Serializable {
         this.schedule = schedule;
     }
 
+    public String getStatus() {
+        this.status =  eStatusTrainer.AVAILABLE.getName();
+        return this.status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return String.format("| %-4d | %-17s | %-10s | %-10s | %-8s | %-20s | %-10s | %-8s | %-20s | %-10s | %-20s | %-15s | %-15s | %-20s | %-8s | %-10s | %-10s | %-10s |\n",
-                id, name, userName, passWord,String.valueOf(age), email, role, phone, address, gender, skill, degree, coachingStyle, Arrays.toString(schedule), level, exp, revenueBonus, totalPrice);
+        return String.format("| %-4d | %-10s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-10s | %-20s | %-10s | %-10s | %-10s | %-15s | %-10s | %-15s |\n",
+                id, name, userName, passWord,String.valueOf(age), email, role, phone, address, gender, skill, degree, coachingStyle, Arrays.toString(schedule),getStatus(), level, exp, revenueBonus, totalPrice);
     }
 }

@@ -1,16 +1,14 @@
 package eNum;
 
-public enum eTarget {
-    WEIGHT_AGAIN("TANG CAN"),LOSING_WEIGHT("GIAM CAN")
-    ,MUSCLE_AGAIN("TANG CO BAP");
+public enum eStatusTrainer {
+    AVAILABLE("SAN SANG"),UNAVAILABLE("KIN LICH");
     private final String name;
 
-    eTarget(String name) {
+    eStatusTrainer(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
     }
-
 }

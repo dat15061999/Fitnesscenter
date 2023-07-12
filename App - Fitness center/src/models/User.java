@@ -1,9 +1,13 @@
 package models;
 
-import java.io.Serializable;
+import eNum.eRole;
 
-public abstract class User implements Serializable {
-    public static int idCurrent =0 ;
+import java.io.Serializable;
+import java.util.List;
+
+public class User implements Serializable {
+    private static final long serialVersionUID = 8645920817018995750L;
+
     public int id;
     public String name;
     public String userName;
@@ -14,7 +18,7 @@ public abstract class User implements Serializable {
     public String email;
     public String gender;
     public int age;
-
+    private List<eRole> roles;
 
 
     public User(int id, String name, String userName, String passWord, int age, int phone, int cccd, String address, String email, String gender) {
@@ -39,13 +43,7 @@ public abstract class User implements Serializable {
     public void setAge(int age) {
         this.age = age;
     }
-    public int getIdCurrent() {
-        return idCurrent;
-    }
 
-    public void setIdCurrent(int idCurrent) {
-        this.idCurrent = idCurrent;
-    }
 
     public int getId() {
         return id;
@@ -73,6 +71,13 @@ public abstract class User implements Serializable {
 
     public String getPassWord() {
         return passWord;
+    }
+    public String getHiddenPassWord() {
+        String hiddenPass = "";
+        for (int i = 0; i < passWord.length(); i++) {
+            hiddenPass += "x";
+        }
+        return hiddenPass;
     }
 
     public void setPassWord(String passWord) {
@@ -119,18 +124,5 @@ public abstract class User implements Serializable {
         this.gender = gender;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", userName='" + userName + '\'' +
-                ", passWord='" + passWord + '\'' +
-                ", phone=" + phone +
-                ", cccd=" + cccd +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", gender='" + gender + '\'' +
-                '}';
-    }
+
 }

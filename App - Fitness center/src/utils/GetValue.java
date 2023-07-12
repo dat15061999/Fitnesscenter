@@ -5,6 +5,10 @@ import eNum.eGender;
 import eNum.eTarget;
 import eNum.eTrainerSchedule;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GetValue {
@@ -122,29 +126,38 @@ public class GetValue {
         return getStyle(str);
     }
 
-    public static void main(String[] args) {
-        System.out.println(getStyle("123"));
-    }
-    public static String[] getSchedule(String str) {
+    public static List<String> getSchedule(String str) {
+        List<String> scheduleList1 = new ArrayList<>();
+        List<String> scheduleList2 = new ArrayList<>();
+        List<String> scheduleList3 = new ArrayList<>();
+        List<String> scheduleList4 = new ArrayList<>();
         try {
             System.out.println(str);
             System.out.println("1. Sang 1 (6H 2-4-6) va Chieu 1 (15H 2-4-6)");
             System.out.println("2. Sang 1 (6H 2-4-6) va Chieu 2 (15H 3-5-7)");
-            System.out.println("3. Sang 2 (15H 3-5-7) va Chieu 1 (15H 2-4-6)");
-            System.out.println("4. Sang 2 (15H 3-5-7) va Chieu 2 (15H 3-5-7)");
+            System.out.println("3. Sang 2 (6H 3-5-7) va Chieu 1 (15H 2-4-6)");
+            System.out.println("4. Sang 2 (6H 3-5-7) va Chieu 2 (15H 3-5-7)");
             choose = Integer.parseInt(getString("Enter your choice: "));
             if (choose < 0 || choose > 1000) {
                 throw new NumberFormatException("Number invalid");
             }
             switch (choose) {
                 case 1:
-                    return new String[] { eTrainerSchedule.SANG1.getName(),eTrainerSchedule.CHIEU1.getName() };
+                    scheduleList1.add(eTrainerSchedule.SANG1.getName());
+                    scheduleList1.add(eTrainerSchedule.CHIEU1.getName());
+                    return scheduleList1;
                 case 2:
-                    return new String[] { eTrainerSchedule.SANG1.getName(),eTrainerSchedule.CHIEU2.getName() };
+                    scheduleList2.add(eTrainerSchedule.SANG1.getName());
+                    scheduleList2.add(eTrainerSchedule.CHIEU2.getName());
+                    return scheduleList2;
                 case 3:
-                    return new String[] { eTrainerSchedule.SANG2.getName(),eTrainerSchedule.CHIEU1.getName() };
+                    scheduleList3.add(eTrainerSchedule.SANG2.getName());
+                    scheduleList3.add(eTrainerSchedule.CHIEU1.getName());
+                    return scheduleList3;
                 case 4:
-                    return new String[] { eTrainerSchedule.SANG2.getName(),eTrainerSchedule.CHIEU2.getName() };
+                    scheduleList4.add(eTrainerSchedule.SANG2.getName());
+                    scheduleList4.add(eTrainerSchedule.CHIEU2.getName());
+                    return scheduleList4;
             }
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
@@ -152,6 +165,34 @@ public class GetValue {
         }
         return getSchedule(str);
     }
+    public static String getClientSchedule(String str) {
+        try {
+            System.out.println(str);
+            System.out.println("1. Sang 1 (6H 2-4-6)");
+            System.out.println("2. Sang 2 (6H 3-5-7) ");
+            System.out.println("3. Chieu 1 (15H 2-4-6)");
+            System.out.println("4. Chieu 2 (15H 3-5-7)");
+            choose = Integer.parseInt(getString("Enter your choice: "));
+            if (choose < 0 || choose > 1000) {
+                throw new NumberFormatException("Number invalid");
+            }
+            switch (choose) {
+                case 1:
+                    return  eTrainerSchedule.SANG1.getName();
+                case 2:
+                    return  eTrainerSchedule.SANG2.getName();
+                case 3:
+                    return  eTrainerSchedule.CHIEU1.getName();
+                case 4:
+                    return  eTrainerSchedule.CHIEU2.getName();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+            return  getClientSchedule(str);
+        }
+        return  getClientSchedule(str);
+    }
+
     public static String getTarget(String str) {
         try {
             System.out.println(str);
@@ -176,6 +217,70 @@ public class GetValue {
         }
         return getTarget(str);
     }
+    public static String getStatusProduct(String str) {
+        try {
+            System.out.println(str);
+            System.out.println("1. NON-TRAINER");
+            System.out.println("2. TRAINED");
+            choose = Integer.parseInt(getString("Enter your choice: "));
+            if (choose < 0 || choose > 1000) {
+                throw new NumberFormatException("Number invalid");
+            }
+            switch (choose) {
+                case 1:
+                    return "NON-TRAINER";
+                case 2:
+                    return "TRAINED";
+
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+            return getStyle(str);
+        }
+        return getStyle(str);
+    }
+    public static String getCardClass(String str) {
+        try {
+            System.out.println(str);
+            System.out.println("1. THUONG");
+            System.out.println("2. BAC");
+            System.out.println("3. VANG");
+            choose = Integer.parseInt(getString("Enter your choice: "));
+            if (choose < 0 || choose > 1000) {
+                throw new NumberFormatException("Number invalid");
+            }
+            switch (choose) {
+                case 1:
+                    return "THUONG";
+                case 2:
+                    return "BAC";
+                case 3:
+                    return "VANG";
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+            return getStyle(str);
+        }
+        return getStyle(str);
+    }
+    public static String getPlusTime(int exp) {
+        LocalDateTime now  = LocalDateTime.now();
+        LocalDateTime newDateTime = now.plusMonths(exp);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return formatter.format(newDateTime);
+    }
+    public static String getMinusTime(int exp) {
+        LocalDateTime now  = LocalDateTime.now();
+        LocalDateTime newDateTime = now.minusMonths(exp);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return formatter.format(newDateTime);
+    }
+    public static String getTimeNow() {
+        LocalDateTime now  = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return formatter.format(now);
+    }
+
 
 
 }

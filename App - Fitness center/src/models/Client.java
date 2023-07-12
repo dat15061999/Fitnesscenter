@@ -12,13 +12,15 @@ public class Client extends User implements Serializable {
     private double bmi;
     private String status;
     private String target;
+
+    private String scheduleClient;
     private String stateOfStrength;
 
     public Client(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender) {
         super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
     }
 
-    public Client(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender, String role, double height, double weight, String target, String stateOfStrength) {
+    public Client(int id,String name, String userName, String passWord,int age, int phone, int cccd, String address, String email, String gender, String role, double height, double weight, String target,String scheduleClient, String stateOfStrength) {
         super(id,name, userName, passWord,age, phone, cccd, address, email, gender);
         this.role = role;
         this.height = height;
@@ -26,8 +28,11 @@ public class Client extends User implements Serializable {
         this.bmi = getBmi();
         this.status = getStatus();
         this.target = target;
+        this.scheduleClient = scheduleClient;
         this.stateOfStrength = stateOfStrength;
     }
+    public Client(String name,String scheduleClient) {}
+    public Client(){}
 
     public String getRole() {
         return role;
@@ -55,11 +60,7 @@ public class Client extends User implements Serializable {
 
     public double getBmi() {
         return bmi = weight/(height*height);
-
     }
-
-
-
     public void setBmi(double bmi) {
         this.bmi = bmi;
     }
@@ -99,10 +100,18 @@ public class Client extends User implements Serializable {
         this.status = status;
     }
 
+    public String getScheduleClient() {
+        return scheduleClient;
+    }
+
+    public void setScheduleClient(String scheduleClient) {
+        this.scheduleClient = scheduleClient;
+    }
+
     @Override
     public String toString() {
-        return String.format("| %-4d | %-10s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s |\n",
-                id, name, userName, passWord, String.valueOf(age), email, role, phone, address, gender, weight, height, String.format("%.6f", bmi), status, target, stateOfStrength);
+        return String.format("| %-4d | %-10s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s |\n",
+                id, name, userName, passWord, String.valueOf(age), email, role, phone, address, gender, weight, height, String.format("%.6f", bmi), status, target,scheduleClient, stateOfStrength);
     }
 
     public static void main(String[] args) {

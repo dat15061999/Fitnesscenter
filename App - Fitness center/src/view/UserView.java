@@ -1,46 +1,42 @@
 package view;
-
-import services.AdminService;
-import services.ClientService;
-import services.TrainerService;
 import utils.GetValue;
-
-
-import static services.UserService.adminView;
+import static page.AdminPage.adminPage;
+import static view.AdminView.adminView;
 import static view.ClientView.clientView;
 import static view.TrainerView.trainerView;
 
-
 public class UserView {
-    private static AdminService adminService = new AdminService();
-    private static TrainerService trainerService = new TrainerService();
-    private static ClientService clientService = new ClientService();
-    public static int choose = -1;
+    public static int choose;
 
     public static void main(String[] args) {
         userView();
     }
 
+
     public static void userView() {
-         while (choose != 0) {
-             switch (userMenuView()) {
-                 case 1:
-                     adminService.readFile();
-                     adminView();
-                     break;
-                 case 2:
-                     trainerService.readFile();
-                     trainerView();
-                     break;
-                 case 3:
-                     clientService.readFile();
-                     clientView();
-                     break;
-             }
-         }
+        printMenuView();
+        choose = GetValue.getInt("Enter your choice:");
+        switch (choose) {
+            case 1:
+                adminView();
+                break;
+            case 2:
+                trainerView();
+                break;
+            case 3:
+                clientView();
+                break;
+            case 0:
+                adminPage();
+                break;
+            default:
+                userView();
+                break;
+        }
+        userView();
     }
 
-    private static int userMenuView() {
+    private static void printMenuView() {
         System.out.println("               ===================================");
         System.out.println("               |            UserVIew             |");
         System.out.println("               ===================================");
@@ -51,11 +47,7 @@ public class UserView {
         System.out.println("               |        4. Updating              |");
         System.out.println("               |        0. Back to program       |");
         System.out.println("               ===================================");
-        return choose = GetValue.getInt("Enter your choice:");
     }
-
-
-
 
 
 }

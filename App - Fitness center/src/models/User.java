@@ -1,6 +1,7 @@
 package models;
 
 import eNum.eRole;
+import utils.AppUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,8 +11,8 @@ public class User implements Serializable {
 
     public int id;
     public String name;
-    public String userName;
-    public String passWord;
+    public String username;
+    public Password password;
     public int phone;
     public int cccd;
     public String address;
@@ -21,11 +22,11 @@ public class User implements Serializable {
     private List<eRole> roles;
 
 
-    public User(int id, String name, String userName, String passWord, int age, int phone, int cccd, String address, String email, String gender) {
+    public User(int id, String name, String userName, String password, int age, int phone, int cccd, String address, String email, String gender) {
         this.id = id;
         this.name = name;
-        this.userName = userName;
-        this.passWord = passWord;
+        this.username = userName;
+        this.password = AppUtils.hashPassword(password);
         this.age = age;
         this.phone = phone;
         this.cccd = cccd;
@@ -33,9 +34,9 @@ public class User implements Serializable {
         this.email = email;
         this.gender = gender;
     }
+    public User(){}
 
-    protected User() {
-    }
+    public User(int id, String name, int age, int phone, String gender) {}
     public int getAge() {
         return age;
     }
@@ -61,27 +62,20 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPassWord() {
-        return passWord;
-    }
-    public String getHiddenPassWord() {
-        String hiddenPass = "";
-        for (int i = 0; i < passWord.length(); i++) {
-            hiddenPass += "x";
-        }
-        return hiddenPass;
+    public Password getPassword() {
+        return password;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = AppUtils.hashPassword(password);
     }
 
     public int getPhone() {

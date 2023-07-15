@@ -5,6 +5,7 @@ import eNum.eGender;
 import eNum.eTarget;
 import eNum.eTrainerSchedule;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,8 +17,17 @@ public class GetValue {
     public static int choose = -1;
 
     public static String getString(String str) {
-        System.out.println(str);
-        return input.nextLine();
+        try {
+            System.out.println(str);
+            String data = input.nextLine();
+            if (data.equals("")) {
+                throw new Exception();
+            }
+            return data;
+        } catch (Exception e) {
+            System.out.println("Empty data. Input again!");
+            return getString(str);
+        }
     }
 
     public static int getInt(String str) {
@@ -32,6 +42,7 @@ public class GetValue {
             return getInt(str);
         }
     }
+
     public static double getDou(String str) {
         double choice = 0;
         try {
@@ -165,6 +176,7 @@ public class GetValue {
         }
         return getSchedule(str);
     }
+
     public static String getClientSchedule(String str) {
         try {
             System.out.println(str);
@@ -178,19 +190,19 @@ public class GetValue {
             }
             switch (choose) {
                 case 1:
-                    return  eTrainerSchedule.SANG1.getName();
+                    return eTrainerSchedule.SANG1.getName();
                 case 2:
-                    return  eTrainerSchedule.SANG2.getName();
+                    return eTrainerSchedule.SANG2.getName();
                 case 3:
-                    return  eTrainerSchedule.CHIEU1.getName();
+                    return eTrainerSchedule.CHIEU1.getName();
                 case 4:
-                    return  eTrainerSchedule.CHIEU2.getName();
+                    return eTrainerSchedule.CHIEU2.getName();
             }
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
-            return  getClientSchedule(str);
+            return getClientSchedule(str);
         }
-        return  getClientSchedule(str);
+        return getClientSchedule(str);
     }
 
     public static String getTarget(String str) {
@@ -217,6 +229,7 @@ public class GetValue {
         }
         return getTarget(str);
     }
+
     public static String getStatusProduct(String str) {
         try {
             System.out.println(str);
@@ -239,6 +252,7 @@ public class GetValue {
         }
         return getStyle(str);
     }
+
     public static String getCardClass(String str) {
         try {
             System.out.println(str);
@@ -263,24 +277,46 @@ public class GetValue {
         }
         return getStyle(str);
     }
-    public static String getPlusTime(int exp) {
-        LocalDateTime now  = LocalDateTime.now();
+
+    public static String getPlusTime(int exp, LocalDate timeExp) {
+        LocalDateTime now;
+        if (timeExp == null) {
+            now = LocalDateTime.now();
+        } else {
+            now = timeExp.atStartOfDay();
+        }
         LocalDateTime newDateTime = now.plusMonths(exp);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return formatter.format(newDateTime);
+        return newDateTime.format(formatter);
     }
-    public static String getMinusTime(int exp) {
-        LocalDateTime now  = LocalDateTime.now();
-        LocalDateTime newDateTime = now.minusMonths(exp);
+
+    public static String backFormatLocalDate(LocalDate timeExp) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return formatter.format(newDateTime);
+        return timeExp.format(formatter);
     }
-    public static String getTimeNow() {
-        LocalDateTime now  = LocalDateTime.now();
+
+    public static LocalDate getTimeNow() {
+        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = now.format(formatter);
+        return LocalDate.parse(formattedDate, formatter);
+    }
+
+    public static String getTime() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         return formatter.format(now);
     }
 
+    public static int getMonthNow() {
+        LocalDateTime now = LocalDateTime.now();
+        return now.getMonthValue();
+    }
+
+    public static int getDayNow() {
+        LocalDateTime now = LocalDateTime.now();
+        return now.getDayOfMonth();
+    }
 
 
 }

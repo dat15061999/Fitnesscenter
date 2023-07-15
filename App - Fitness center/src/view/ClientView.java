@@ -43,6 +43,7 @@ public class ClientView {
                 clientView();
                 break;
         }
+        clientView();
     }
 
     private static void printMenu() {

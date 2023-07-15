@@ -3,7 +3,6 @@ package models;
 import eNum.eRole;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Admin extends User implements Serializable {
     private static final long serialVersionUID = 3055276268292339966L;
@@ -40,6 +39,6 @@ public class Admin extends User implements Serializable {
     @Override
     public String toString() {
         return  String.format("| %-4d | %-15s | %-20s | %-20s | %-10s |  %-8s  | %-30s | %-15s | %-8s | %-20s |",
-                id, name, userName, passWord,String.valueOf(age),gender, email, role, phone, address);
+                id, name, username, password.getPasscode(),String.valueOf(age),gender, email, role, phone, address);
     }
 }

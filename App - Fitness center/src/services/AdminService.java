@@ -5,13 +5,10 @@ import utils.AppUtils;
 import utils.CRUD;
 import utils.GetValue;
 import utils.SerializationUtil;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static page.AdminPage.adminPage;
 
 public class AdminService implements CRUD<Admin> {
     private static final long serialVersionUID = 3055276268292339966L;
@@ -31,13 +28,15 @@ public class AdminService implements CRUD<Admin> {
         }
         nextIdAdmin = AppUtils.findNext(adminList.stream().map(User::getId).collect(Collectors.toList()));
     }
-
+    private static void save() {
+        SerializationUtil.serialize(adminList, address);
+    }
     @Override
     public void create(Admin admin) {
         admin.setId(nextIdAdmin);
         admin.setName(GetValue.getString("Nhap ten moi :"));
-        admin.setUserName(GetValue.getString("Nhap userName :"));
-        admin.setPassWord(GetValue.getString("Nhap passWord :"));
+        admin.setUsername(GetValue.getString("Nhap userName :"));
+        admin.setPassword(GetValue.getString("Nhap passWord :"));
         admin.setAge(GetValue.getInt("Nhap tuoi"));
         admin.setPhone(GetValue.getInt("Nhap so dien thoai"));
         admin.setCccd(GetValue.getInt("Nhap cccd"));
@@ -46,7 +45,7 @@ public class AdminService implements CRUD<Admin> {
         admin.setGender(GetValue.getString("Nhap gioi tinh :"));
         System.out.println("Them Admin thanh cong");
         adminList.add(admin);
-        SerializationUtil.serialize(adminList, address);
+        save();
     }
 
     @Override
@@ -60,7 +59,7 @@ public class AdminService implements CRUD<Admin> {
             }
         }
         adminList.remove(adminDelete);
-        SerializationUtil.serialize(adminList, address);
+        save();
     }
 
     @Override
@@ -68,8 +67,8 @@ public class AdminService implements CRUD<Admin> {
         for (Admin admin : adminList) {
             if (idAdmin == admin.getId()) {
                 admin.setName(GetValue.getString("Nhap ten moi :"));
-                admin.setUserName(GetValue.getString("Nhap userName :"));
-                admin.setPassWord(GetValue.getString("Nhap passWord :"));
+                admin.setUsername(GetValue.getString("Nhap userName :"));
+                admin.setPassword(GetValue.getString("Nhap password"));
                 admin.setAge(GetValue.getInt("Nhap tuoi"));
                 admin.setPhone(GetValue.getInt("Nhap so dien thoai"));
                 admin.setCccd(GetValue.getInt("Nhap cccd"));
@@ -80,15 +79,15 @@ public class AdminService implements CRUD<Admin> {
                 break;
             }
         }
-        SerializationUtil.serialize(adminList, address);
+        save();
     }
 
     public static void historyLoginAdmin(Admin admin) {
-        admin.setDate(GetValue.getTimeNow());
+        admin.setDate(GetValue.getTime());
         loginHistory.add(admin);
         SerializationUtil.serialize(loginHistory, "loginAdmin.txt");
     }
-    public static void historyLogin() {
+    public static void printHistoryLogin() {
         if (loginHistory != null) {
             System.out.printf("| %-20s | %-30s |\n",
                     "Name", "Time");
@@ -104,10 +103,7 @@ public class AdminService implements CRUD<Admin> {
         return adminList;
     }
 
-    @Override
-    public Admin find(int id) {
-        return null;
-    }
+
 
     @Override
     public void getAll() {
@@ -124,6 +120,12 @@ public class AdminService implements CRUD<Admin> {
         } else {
             System.out.println("Admin list is empty.");
         }
+    }
+    public static Admin getByUserName(String userName) {
+        return adminList.stream()
+                .filter(e -> e.getUsername().equals(userName))
+                .findFirst()
+                .orElse(null);
     }
 
 

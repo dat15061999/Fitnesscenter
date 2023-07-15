@@ -9,7 +9,7 @@ public class UserView {
     public static int choose;
 
     public static void main(String[] args) {
-        userView();
+        clientView();
     }
 
 

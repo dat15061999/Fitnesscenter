@@ -1,24 +1,23 @@
 package services;
-
 import models.Client;
 import models.User;
 import utils.AppUtils;
 import utils.CRUD;
 import utils.GetValue;
 import utils.SerializationUtil;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static page.AdminPage.adminPage;
 import static page.ClientPage.choose;
 import static page.ClientPage.clientPage;
+import static services.BillService.billList;
+import static view.BillView.billView;
 import static view.ClientView.clientView;
 import static view.ClientView.printClient;
 
 
-public class ClientService implements CRUD<Client> {
+public class ClientService implements CRUD<Client>, Serializable {
     private static final long serialVersionUID = 3055276268292339966L;
     public static List<Client> clientList;
     public static int nextIdClient;
@@ -31,15 +30,17 @@ public class ClientService implements CRUD<Client> {
         }
         nextIdClient = AppUtils.findNext(clientList.stream().map(User::getId).collect(Collectors.toList()));
     }
+
     private static void save() {
         SerializationUtil.serialize(clientList, addressClient);
     }
+
     @Override
     public void create(Client client) {
         client.setId(nextIdClient);
         client.setName(GetValue.getString("Nhap ten khach hang"));
-        client.setUserName(AppUtils.checkClient(GetValue.getString("Nhap userName"), clientList));
-        client.setPassWord(GetValue.getString("Nhap passWord"));
+        client.setUsername(AppUtils.checkClient(GetValue.getString("Nhap userName"), clientList));
+        client.setPassword(GetValue.getString("Nhap passWord"));
         client.setAge(GetValue.getInt("Nhap tuoi"));
         client.setPhone(GetValue.getPhone("Nhap so dien thoai"));
         client.setCccd(GetValue.getCccd("Nhap cccd"));
@@ -48,7 +49,7 @@ public class ClientService implements CRUD<Client> {
         client.setGender(GetValue.getGender("Chon gioi tinh"));
         client.setHeight(GetValue.getDou("Nhap chieu cao"));
         client.setWeight(GetValue.getDou("Nhap can nang"));
-        client.setStatus(client.getStatus());
+        client.setStatusBmi(client.getStatusBmi());
         client.setRole(client.getRole());
         client.setTarget(GetValue.getTarget("Chon muc tieu huan luyen"));
         client.setScheduleClient(GetValue.getClientSchedule("Chon lich trinh huan luyen"));
@@ -81,8 +82,8 @@ public class ClientService implements CRUD<Client> {
                 switch (choose) {
                     case 1:
                         client.setName(GetValue.getString("Nhap ten moi :"));
-                        client.setUserName(GetValue.getString("Nhap userName :"));
-                        client.setPassWord(GetValue.getString("Nhap passWord :"));
+                        client.setUsername(AppUtils.checkClient(GetValue.getString("Nhap userName"), clientList));
+                        client.setPassword(GetValue.getString("Nhap passWord :"));
                         client.setAge(GetValue.getInt("Nhap tuoi"));
                         client.setPhone(GetValue.getPhone("Nhap so dien thoai"));
                         client.setCccd(GetValue.getCccd("Nhap cccd"));
@@ -90,17 +91,17 @@ public class ClientService implements CRUD<Client> {
                         client.setEmail(GetValue.getString("Nhap emali :"));
                         client.setGender(GetValue.getGender("Nhap gioi tinh :"));
                         System.out.println("Thay doi thong tin khach hang thanh cong!");
-                        break;
-                    case 2: //  weight, height, String.format("%.6f", bmi), status, target, stateOfStrength);
+                    break;
+                    case 2:  //  weight, height, String.format("%.6f", bmi), status, target, stateOfStrength);
                         client.setWeight(GetValue.getDou("Nhap trong luong "));
                         client.setHeight(GetValue.getDou("Nhap chieu cao "));
                         client.setTarget(GetValue.getTarget("Chon muc tieu"));
                         client.setStateOfStrength(GetValue.getString("Nhap tinh trang suc khoe"));
                         client.setBmi(client.getBmi());
-                        client.setStatus(client.getStatus());
+                        client.setStatusBmi(client.getStatusBmi());
                         client.setScheduleClient(GetValue.getClientSchedule("Chon lich trinh huan luyen"));
                         System.out.println("Thay doi thong tin huan luyen cua khach hang thanh cong!");
-                        break;
+                    break;
                     case 0:
                         clientView();
                         break;
@@ -108,9 +109,10 @@ public class ClientService implements CRUD<Client> {
                         update(idClient);
                         break;
                 }
+                update(idClient);
             }
-            save();
         }
+            save();
     }
 
     @Override
@@ -119,48 +121,44 @@ public class ClientService implements CRUD<Client> {
     }
 
     @Override
-    public Client find(int id) {
-        return null;
-    }
-
-    @Override
     public void getAll() {
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.println("|                                                                          Client List                                                                                                                                                       |");
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.printf("| %-4s | %-10s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s |\n",
-                "ID", "Name", "Username", "Password", "Age", "Email", "Role", "Phone", "Address", "Gender", "Weight", "Height", "BMI", "Status", "Target", "Schedule", "Strength");
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("|                                                                          Client List                                                                                                                                                                                |");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-4s | %-20s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s | %-12s |\n",
+                "ID", "Name", "Username", "Password", "Age", "Email", "Role", "Phone", "Address", "Gender", "Weight", "Height", "BMI", "Status BMI", "Target", "Schedule", "Strength","Member Card");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         for (Client client : clientList) {
             System.out.println(client);
         }
     }
 
     public static void clientPersonal(String userName) {
-        if (clientList != null) {
-            for (Client client : clientList) {
-                if (client.getUserName().equals(userName)) {
-                    System.out.printf("| %-10s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s |\n",
-                             "Name", "Username", "Password", "Age", "Email", "Phone", "Address", "Gender", "Weight", "Height", "BMI", "Status", "Target", "Schedule", "Strength");
-                    String formattedString = String.format("| %-10s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s |\n",
-                            client.getName(), client.getUserName(), client.getHiddenPassWord(), String.valueOf(client.getAge()), client.getEmail(), client.getPhone()
-                            , client.getAddress(), client.getGender(), client.getWeight(), client.getHeight(), String.format("%.6f", client.getBmi()), client.getStatus(), client.getTarget(), client.getScheduleClient(), client.getStateOfStrength());
-                    System.out.println(formattedString);
-                }
-            }
+        if (clientList.stream().anyMatch(e -> e.getUsername().equals(userName))) {
+            Client client = getByUserName(userName);
+            System.out.printf("| %-20s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s | %-12s |\n",
+                    "Name", "Username", "Password", "Age", "Email", "Phone", "Address", "Gender", "Weight", "Height", "BMI", "Status", "Target", "Schedule", "Strength","Member Card");
+            String formattedString = String.format("| %-20s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s | %-12s |\n",
+                    client.getName(), client.getUsername(), client.getPassword().getPasscode(),
+                    String.valueOf(client.getAge()), client.getEmail(), client.getPhone(),
+                    client.getAddress(), client.getGender(), client.getWeight(), client.getHeight(),
+                    String.format("%.6f", client.getBmi()), client.getStatusBmi(), client.getTarget(),
+                    client.getScheduleClient(), client.getStateOfStrength(),client.getStatusMember());
+            System.out.println(formattedString);
         }
     }
 
+
     public static void changeInf(String userName) {
         for (Client client : clientList) {
-            if (client.getUserName().equals(userName)) {
+            if (client.getUsername().equals(userName)) {
                 printMenuUpdate();
                 choose = GetValue.getInt("Enter your choice :");
                 switch (choose) {
                     case 1:
                         client.setName(GetValue.getString("Nhap ten moi :"));
-                        client.setUserName(GetValue.getString("Nhap userName :"));
-                        client.setPassWord(GetValue.getString("Nhap passWord :"));
+                        client.setUsername(AppUtils.checkClient(GetValue.getString("Nhap userName"), clientList));
+                        client.setPassword(GetValue.getString("Nhap passWord :"));
                         client.setAge(GetValue.getInt("Nhap tuoi"));
                         client.setPhone(GetValue.getPhone("Nhap so dien thoai"));
                         client.setCccd(GetValue.getCccd("Nhap cccd"));
@@ -169,13 +167,13 @@ public class ClientService implements CRUD<Client> {
                         client.setGender(GetValue.getGender("Nhap gioi tinh :"));
                         System.out.println("Thay doi thong tin khach hang thanh cong!");
                         break;
-                    case 2: //  weight, height, String.format("%.6f", bmi), status, target, stateOfStrength);
+                    case 2:
                         client.setWeight(GetValue.getDou("Nhap trong luong "));
                         client.setHeight(GetValue.getDou("Nhap chieu cao "));
                         client.setTarget(GetValue.getTarget("Chon muc tieu"));
                         client.setStateOfStrength(GetValue.getString("Nhap tinh trang suc khoe"));
                         client.setBmi(client.getBmi());
-                        client.setStatus(client.getStatus());
+                        client.setStatusBmi(client.getStatusBmi());
                         client.setScheduleClient(GetValue.getClientSchedule("Chon lich trinh huan luyen"));
                         System.out.println("Thay doi thong tin huan luyen cua khach hang thanh cong!");
                         break;
@@ -186,6 +184,7 @@ public class ClientService implements CRUD<Client> {
                         changeInf(userName);
                         break;
                 }
+                changeInf(userName);
             }
 
         }
@@ -198,19 +197,19 @@ public class ClientService implements CRUD<Client> {
         System.out.println("0. Back to program");
     }
 
-    public static Client createClientOfBill(Client client) {
+    public static Client createClientOfBill() {
         printCreateClientBill();
         choose = GetValue.getInt("Enter your choice :");
         switch (choose) {
             case 1:
                 printClient();
-                choose = GetValue.getInt("Chon id khach hang");
-                break;
+                return AppUtils.checkBill(GetValue.getInt("Chon id khach hang"), billList, clientList);
             case 2:
+                Client client = new Client();
                 client.setId(nextIdClient);
                 client.setName(GetValue.getString("Nhap ten khach hang"));
-                client.setUserName(AppUtils.checkClient(GetValue.getString("Nhap userName"), clientList));
-                client.setPassWord(GetValue.getString("Nhap passWord"));
+                client.setUsername(AppUtils.checkClient(GetValue.getString("Nhap userName"), clientList));
+                client.setPassword(GetValue.getString("Nhap passWord"));
                 client.setAge(GetValue.getInt("Nhap tuoi"));
                 client.setPhone(GetValue.getPhone("Nhap so dien thoai"));
                 client.setCccd(GetValue.getCccd("Nhap cccd"));
@@ -219,7 +218,7 @@ public class ClientService implements CRUD<Client> {
                 client.setGender(GetValue.getGender("Chon gioi tinh"));
                 client.setHeight(GetValue.getDou("Nhap chieu cao"));
                 client.setWeight(GetValue.getDou("Nhap can nang"));
-                client.setStatus(client.getStatus());
+                client.setStatusBmi(client.getStatusBmi());
                 client.setRole(client.getRole());
                 client.setTarget(GetValue.getTarget("Chon muc tieu huan luyen"));
                 client.setScheduleClient(GetValue.getClientSchedule("Chon lich trinh huan luyen"));
@@ -229,15 +228,39 @@ public class ClientService implements CRUD<Client> {
                 save();
                 return client;
             case 0:
-                adminPage();
+                billView();
                 break;
         }
-        return createClientOfBill(client);
+        return createClientOfBill();
     }
+
     public static void printCreateClientBill() {
-        System.out.println("1. Chon khach hang");
-        System.out.println("2. Them khach hang moi");
-        System.out.println("0. Back to program");
+        System.out.println("               ===================================");
+        System.out.println("               |           Crate Bill            |");
+        System.out.println("               ===================================");
+        System.out.println("               | Options:                        |");
+        System.out.println("               |        1. Chon khach hang       |");
+        System.out.println("               |        2. Them khach hang moi   |");
+        System.out.println("               |        0. Back to program       |");
+        System.out.println("               ===================================");
+    }
+
+    public static Client getByUserName(String userName) {
+        return clientList.stream()
+                .filter(e -> e.getUsername().equals(userName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static String setStatusClient(int idClient,String statusMember) {
+         clientList.stream().
+                filter(e -> e.getId() == (idClient)).
+                forEach(e->e.setStatusMember(statusMember));
+         save();
+         return clientList.stream().filter(e->e.getId() == (idClient)).
+                 map(Client::getStatusMember)
+                .findFirst()
+                .orElse(null);
     }
 
 }

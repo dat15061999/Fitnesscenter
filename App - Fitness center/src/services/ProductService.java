@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class ProductService implements CRUD<Product>, Serializable {
     private static final long serialVersionUID = 4L;
     public static List<Product> productList;
@@ -61,8 +62,15 @@ public class ProductService implements CRUD<Product>, Serializable {
     }
 
     @Override
-    public List readFile() {
+    public List<Product> readFile() {
         return productList;
+    }
+
+    public static Product getProduct(int id) {
+        if (!productList.isEmpty()) {
+        return  productList.stream().filter(e->e.getId()==id).findFirst().orElse(null);
+        }
+        return null;
     }
 
     @Override

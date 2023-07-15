@@ -1,7 +1,5 @@
 package models;
-
 import java.io.Serializable;
-
 import static utils.CurrencyFormat.covertPriceToString;
 
 public class Product implements Serializable {

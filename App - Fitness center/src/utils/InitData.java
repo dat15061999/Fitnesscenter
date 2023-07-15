@@ -3,6 +3,8 @@ package utils;
 import eNum.*;
 import models.*;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,7 @@ public class InitData {
     private static List<String> schedule2 = new ArrayList<>();
     private static List<String> schedule3 = new ArrayList<>();
     private static List<String> schedule4 = new ArrayList<>();
+    private static List<Integer> timeWork = new ArrayList<>();
 
     static {
         //    SANG1("6H 2-4-6"),SANG2("6H 3-5-7"),CHIEU1("15H 2-4-6"),CHIEU2("15H 3-5-7");
@@ -30,11 +33,25 @@ public class InitData {
 
         schedule4.add(eTrainerSchedule.SANG2.getName());
         schedule4.add(eTrainerSchedule.CHIEU2.getName());
+
+        timeWork.add(1);
+        timeWork.add(2);
+        timeWork.add(3);
+        timeWork.add(4);
+        timeWork.add(5);
+        timeWork.add(6);
+        timeWork.add(7);
+        timeWork.add(8);
+        timeWork.add(9);
+        timeWork.add(10);
+        timeWork.add(11);
+        timeWork.add(12);
+        timeWork.add(13);
+
     }
 
     public static void main(String[] args) {
-        initBill();
-
+        System.out.println(timeWork.size());
     }
 
     public static void initAdmin() {
@@ -51,20 +68,23 @@ public class InitData {
         List<Client> clients = new ArrayList<>();
         clients.add(new Client(1, "Tuan Phu Bai", "tuanem123", "123456", 22, 123456, 1900031, "28 Nguyen Tri Phuong", "tuanem@gamil.com", eGender.MALE.getName(), eRole.CLIENT.getName(), 1.65, 70, "Tang can", eTrainerSchedule.SANG1.getName(), "Tot"));
         clients.add(new Client(2, "Tuan Hue", "tuananh123", "123456", 22, 223456, 1900031, "28 Nguyen Tri Phuong", "tuanem@gamil.com", eGender.MALE.getName(), eRole.CLIENT.getName(), 1.65, 65, "Tang can", eTrainerSchedule.SANG2.getName(), "Tot"));
-        clients.add(new Client(3, "Anh Linh", "anhlinh123", "123456", 18, 323456, 1900032, "28 Nguyen Tri Phuong", "tuanem@gamil.com", eGender.FEMALE.getName(), eRole.CLIENT.getName(), 1.65, 65, "Tang can", eTrainerSchedule.CHIEU1.getName(), "Tot"));
+        clients.add(new Client(3, "Anh Linh", "anhlinh123", "123456", 18, 323456, 1900032, "28 Nguyen Tri Phuong", "linh@gamil.com", eGender.FEMALE.getName(), eRole.CLIENT.getName(), 1.65, 65, "Tang can", eTrainerSchedule.CHIEU1.getName(), "Tot"));
+        clients.add(new Client(4, "Anh Nam", "nam123", "123456", 18, 323456, 1900034, "28 Nguyen Tri Phuong", "nam@gamil.com", eGender.MALE.getName(), eRole.CLIENT.getName(), 1.5, 65, "Tang can", eTrainerSchedule.CHIEU2.getName(), "Tot"));
+        clients.add(new Client(5, "Nguyen Thi", "thi123", "123456", 38, 323456, 1900055, "28 Nguyen Tri Phuong", "thi@gamil.com", eGender.FEMALE.getName(), eRole.CLIENT.getName(), 1.5, 65, "Tang can", eTrainerSchedule.CHIEU1.getName(), "Tot"));
+        clients.add(new Client(6, "Me Tuyet", "tuyet123", "123456", 48, 323456, 1900035, "28 Nguyen Tri Phuong", "tuyet@gamil.com", eGender.FEMALE.getName(), eRole.CLIENT.getName(), 1.5, 65, "Tang can", eTrainerSchedule.SANG1.getName(), "Tot"));
         SerializationUtil.serialize(clients, "clients.txt");
 
     }
 
     public static void initTrainer() {
         List<Trainer> trainer = new ArrayList<>();
-        trainer.add(new Trainer(1, "Pham Van Thanh", "thanhpt", "123456", 30, 19922, 1900331, "28 Nguyen Tri Phuong", "tuanpt@gmail.com", eGender.FEMALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG PHI CONG", eCoachingStyle.STRONG.getName(), schedule1));
-        trainer.add(new Trainer(2, "Nguyen Anh Tuan", "tuanadtpt", "123456", 29, 199223, 1900332, "28 Nguyen Tri Phuong", "tuanadtpt@gmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG MAY BAY", eCoachingStyle.HEALTHY.getName(), schedule2));
-        trainer.add(new Trainer(3, "Le Em Tuan", "tuanempt", "123456", 24, 199224, 1900333, "28 Nguyen Tri Phuong", "tuanpt@gmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG XE TANG", eCoachingStyle.STRONG.getName(), schedule3));
-        trainer.add(new Trainer(4, "Le Anh Tuan", "tuananhpt", "123456", 24, 197222, 1900334, "28 Nguyen Tri Phuong", "tuananhpt@gmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG XE TANG", eCoachingStyle.STRONG.getName(), schedule3));
-        trainer.add(new Trainer(5, "Tran Dinh Duy", "duypt", "123456", 27, 169222, 1900335, "28 Nguyen Tri Phuong", "duypt@gmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG XE MAY", eCoachingStyle.STRONG.getName(), schedule1));
-        trainer.add(new Trainer(6, "Nguyen Ngoc Anh", "anhpt", "123456", 27, 159224, 1900336, "28 Nguyen Tri Phuong", "anhpt@gmail.com", eGender.FEMALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG XE MAY", eCoachingStyle.STRONG.getName(), schedule1));
-        trainer.add(new Trainer(7, "Nguyen Xuan Phuc", "phucpt", "123456", 25, 195226, 1900337, "28 Nguyen Tri Phuong", "phucpt@ggmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG CU NHAN", eCoachingStyle.STRONG.getName(), schedule4));
+        trainer.add(new Trainer(1, "Pham Van Thanh", "thanhpt", "123456", 30, 19922, 1900331, "28 Nguyen Tri Phuong", "tuanpt@gmail.com", eGender.FEMALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG PHI CONG", eCoachingStyle.STRONG.getName(), schedule1,timeWork));
+        trainer.add(new Trainer(2, "Nguyen Anh Tuan", "tuanadtpt", "123456", 29, 199223, 1900332, "28 Nguyen Tri Phuong", "tuanadtpt@gmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG MAY BAY", eCoachingStyle.HEALTHY.getName(), schedule2,timeWork));
+        trainer.add(new Trainer(3, "Le Em Tuan", "tuanempt", "123456", 24, 199224, 1900333, "28 Nguyen Tri Phuong", "tuanpt@gmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG XE TANG", eCoachingStyle.STRONG.getName(), schedule3,timeWork));
+        trainer.add(new Trainer(4, "Le Anh Tuan", "tuananhpt", "123456", 24, 197222, 1900334, "28 Nguyen Tri Phuong", "tuananhpt@gmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG XE TANG", eCoachingStyle.STRONG.getName(), schedule3,timeWork));
+        trainer.add(new Trainer(5, "Tran Dinh Duy", "duypt", "123456", 27, 169222, 1900335, "28 Nguyen Tri Phuong", "duypt@gmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG XE MAY", eCoachingStyle.STRONG.getName(), schedule1,timeWork));
+        trainer.add(new Trainer(6, "Nguyen Ngoc Anh", "anhpt", "123456", 27, 159224, 1900336, "28 Nguyen Tri Phuong", "anhpt@gmail.com", eGender.FEMALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG XE MAY", eCoachingStyle.STRONG.getName(), schedule1,timeWork));
+        trainer.add(new Trainer(7, "Nguyen Xuan Phuc", "phucpt", "123456", 25, 195226, 1900337, "28 Nguyen Tri Phuong", "phucpt@ggmail.com", eGender.MALE.getName(), eRole.PT.getName(), 7000000, 8000000, 10, "NANG TA BANG 1 TAY", "BANG CU NHAN", eCoachingStyle.STRONG.getName(), schedule4,timeWork));
         SerializationUtil.serialize(trainer, "trainer.txt");
     }
 
@@ -81,12 +101,9 @@ public class InitData {
 
     public static void initBill() {
         List<Bill> bills = new ArrayList<>();
-        bills.add(new Bill(1, clientList.get(0), trainerList.get(0), productList.get(3), 6000000, "CONFIRMED"));
-        bills.add(new Bill(2, clientList.get(1), trainerList.get(2), productList.get(3), 6000000, "CONFIRMED"));
-        bills.add(new Bill(3, clientList.get(2), trainerList.get(3), productList.get(3), 6000000, "CONFIRMED"));
-        for (Bill bill : bills) {
-            System.out.println(bill);
-        }
+        bills.add(new Bill(1, clientList.get(0), trainerList.get(0), productList.get(3),  LocalDate.of(2023, Month.JUNE, 10), 0,"CONFIRMED","PAID"));
+        bills.add(new Bill(2, clientList.get(1), trainerList.get(2), productList.get(3),LocalDate.of(2023, Month.JUNE, 12), 0,"CONFIRMED", "PAID"));
+        bills.add(new Bill(3, clientList.get(2), trainerList.get(3), productList.get(3),LocalDate.of(2023, Month.JULY, 2), 0,"CONFIRMED", "PAID"));
         SerializationUtil.serialize(bills, "bill.txt");
     }
 

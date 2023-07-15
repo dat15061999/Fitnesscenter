@@ -12,6 +12,9 @@ public class TrainerView {
         trainerService.readFile();
     }
 
+    public static void main(String[] args) {
+        trainerView();
+    }
     public static void trainerView() {
             trainerMenu();
             choose =  GetValue.getInt("Enter your choice:");
@@ -38,6 +41,7 @@ public class TrainerView {
                     trainerView();
                     break;
             }
+        trainerView();
     }
 
     private static void trainerMenu() {

@@ -8,7 +8,7 @@ import static view.LoginView.loginView;
 public class ClientPage {
     public static int choose;
     public static void main(String[] args) {
-        clientPage("tuanem123");
+        clientPage("nam123");
     }
     public static void clientPage(String userName) {
             clientMenu();

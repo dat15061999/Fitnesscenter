@@ -1,11 +1,12 @@
 package page;
 import utils.GetValue;
-import static services.AdminService.historyLogin;
+import static services.AdminService.printHistoryLogin;
+import static services.BillService.confirmPayments;
+import static services.BillService.payments;
+import static view.BillView.billView;
 import static view.LoginView.loginView;
 import static view.ProductView.productView;
 import static view.UserView.userView;
-
-
 public class AdminPage {
     public static int choose;
 
@@ -24,16 +25,13 @@ public class AdminPage {
                 productView();
                 break;
             case 3:
-                //trainerView();
+                billView();
                 break;
             case 4:
-                //trainerView();
+                payPage();
                 break;
             case 5:
-                //trainerView();
-                break;
-            case 6:
-                historyLogin();
+                printHistoryLogin();
                 break;
             case 0:
                 loginView();
@@ -50,9 +48,39 @@ public class AdminPage {
         System.out.println("               |        1. User management       |");
         System.out.println("               |        2. Product management    |");
         System.out.println("               |        3. Bill management       |");
-        System.out.println("               |        4. Updating              |");
+        System.out.println("               |        4. Payments              |");
         System.out.println("               |        5. History login         |");
         System.out.println("               |        0. Log Out               |");
+        System.out.println("               ===================================");
+    }
+    private static void payPage() {
+        menuPayment();
+        choose = GetValue.getInt("Enter your choice :");
+        switch (choose) {
+            case 1:
+                System.out.println("Danh sach cac don hang da thanh toan!");
+                payments("PAID");
+                break;
+            case 2:
+                payments("UNPAID");
+                choose = GetValue.getInt("Nhap id muon thanh toan !");
+                confirmPayments(choose);
+                break;
+            case 0:
+                adminPage();
+                break;
+        }
+        payPage();
+    }
+
+    private static void menuPayment() {
+        System.out.println("               ===================================");
+        System.out.println("               |            Pay Page             |");
+        System.out.println("               ===================================");
+        System.out.println("               | Options:                        |");
+        System.out.println("               |        1. History payments      |");
+        System.out.println("               |        2. Confirmed             |");
+        System.out.println("               |        0. Back on program       |");
         System.out.println("               ===================================");
     }
 

@@ -66,7 +66,7 @@ public class ProductView {
     private static void updateProduct() {
         productService.update(GetValue.getInt("Nhap id san pham muon chinh sua"));
     }
-    private static void printProduct() {
+    public static void printProduct() {
         productService.getAll();
     }
 }

@@ -13,10 +13,6 @@ public class AdminView {
         adminService.readFile();
     }
 
-    public static void main(String[] args) {
-        adminView();
-    }
-
     public static void adminView() {
         printMenu();
         choose = GetValue.getInt("Enter your choice:");

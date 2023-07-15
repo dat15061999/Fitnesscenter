@@ -1,10 +1,10 @@
 package models;
-
 import utils.GetValue;
 import java.io.Serializable;
+import java.time.LocalDate;
+
 
 import static services.TrainerService.remoteSchedule;
-
 public class BIllDetail implements Serializable {
     private static final long serialVersionUID = 15L;
     protected Trainer trainerPerson;
@@ -12,12 +12,12 @@ public class BIllDetail implements Serializable {
     protected Product product;
     protected Client clientMember;
     protected double total;
-    protected String timeExp = GetValue.getTimeNow();
+    protected LocalDate timeExp;
 
     public BIllDetail() {
     }
 
-    public BIllDetail(Trainer trainerPerson, Product product, double total, Client clientMember) {
+    public BIllDetail(Trainer trainerPerson, Product product, double total, Client clientMember,LocalDate timeExp) {
         this.trainerPerson = trainerPerson;
         this.product = product;
         this.total = total;
@@ -25,10 +25,16 @@ public class BIllDetail implements Serializable {
         this.clientMember = clientMember;
     }
 
-    public Trainer getTrainerPerson() {
-        remoteSchedule(trainerPerson.getId(), clientMember.getScheduleClient());
-        return trainerPerson;
-    }
+        public  Trainer getTrainerPerson() {
+            if (trainerPerson != null) {
+                if (clientMember != null && "REGISTERED".equals(clientMember.getStatusMember())) {
+                    remoteSchedule(trainerPerson.getId(), clientMember.getScheduleClient());
+                }
+                return trainerPerson;
+            }
+            return null;
+        }
+
 
     public void setTrainerPerson(Trainer trainerPerson) {
         this.trainerPerson = trainerPerson;
@@ -52,18 +58,18 @@ public class BIllDetail implements Serializable {
     }
 
     public double getTotal() {
-        return total = (trainerPerson.getPriceCoachHire() + product.getPriceCardClass());
+        return total = (((trainerPerson!=null)?trainerPerson.getPriceCoachHire():0) + product.getPriceCardClass());
     }
 
     public void setTotal(double total) {
         this.total = total;
     }
 
-    public String getTimeExp() {
-        return timeExp;
+    public LocalDate getTimeExp() {
+        return GetValue.getTimeNow();
     }
 
-    public void setTimeExp(String timeExp) {
+    public void setTimeExp(LocalDate timeExp) {
         this.timeExp = timeExp;
     }
 }

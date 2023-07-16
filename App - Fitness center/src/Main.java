@@ -11,8 +11,8 @@ public class Main {
         initTrainer();
         initProduct();
         initBill();
-        //billView();
-        trainerPage("thanhpt");
+        billView();
+        //trainerPage("thanhpt");
 
 
     }

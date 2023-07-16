@@ -33,10 +33,10 @@ public class LoginService implements Check {
                         TrainerService.getByUserName(userName).getPassword().getKey()))) {
             System.out.println("Dang nhap Trainer Page thanh cong");
             trainerPage(userName);
-        } else if (ClientService.getByUserName(userName) != null && ClientService.getByUserName(userName).
+        } else if (ClientService.getByUserNameCLient(userName) != null && ClientService.getByUserNameCLient(userName).
                 getPassword().getPasscode().
                 equals(AppUtils.hashPassword(passWord,
-                        ClientService.getByUserName(userName).getPassword().getKey()))) {
+                        ClientService.getByUserNameCLient(userName).getPassword().getKey()))) {
             System.out.println("Dang nhap Client Page thanh cong");
             clientPage(userName);
         } else {

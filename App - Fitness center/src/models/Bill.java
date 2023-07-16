@@ -54,14 +54,15 @@ public class Bill extends BIllDetail implements Serializable {
                 clientMember.getName(),
                 clientMember.getScheduleClient(),
                 product.getNameCard(),
-                ( trainerPerson!=null? trainerPerson.getName() : "null"),
+                ( trainerPerson!=null? trainerPerson.getName() : "NONE-COACH"),
                (trainerPerson!=null && getStatusCoach().equals("CONFIRMED")? String.valueOf(CurrencyFormat.
                       covertPriceToString(
                               getTrainerPerson()
-                                      .getPriceCoachHire())):"null")
+                                      .getPriceCoachHire())):0)
                 ,GetValue.backFormatLocalDate(timeExp),
                 String.valueOf(product.getExpiryDate()), GetValue.getPlusTime(product.getExpiryDate(),timeExp),
-                CurrencyFormat.covertPriceToString(product.getPriceCardClass()),CurrencyFormat.covertPriceToString(getTotal()),
+                CurrencyFormat.covertPriceToString(product.getPriceCardClass()),
+                CurrencyFormat.covertPriceToString(getTotal()),
                 product.getStatus(),
                 statusCoach,status);
     }

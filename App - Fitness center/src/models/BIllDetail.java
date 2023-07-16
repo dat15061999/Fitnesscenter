@@ -1,10 +1,13 @@
 package models;
+
 import utils.GetValue;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
 
 import static services.TrainerService.remoteSchedule;
+
 public class BIllDetail implements Serializable {
     private static final long serialVersionUID = 15L;
     protected Trainer trainerPerson;
@@ -17,7 +20,7 @@ public class BIllDetail implements Serializable {
     public BIllDetail() {
     }
 
-    public BIllDetail(Trainer trainerPerson, Product product, double total, Client clientMember,LocalDate timeExp) {
+    public BIllDetail(Trainer trainerPerson, Product product, double total, Client clientMember, LocalDate timeExp) {
         this.trainerPerson = trainerPerson;
         this.product = product;
         this.total = total;
@@ -25,15 +28,15 @@ public class BIllDetail implements Serializable {
         this.clientMember = clientMember;
     }
 
-        public  Trainer getTrainerPerson() {
-            if (trainerPerson != null) {
-                if (clientMember != null && "REGISTERED".equals(clientMember.getStatusMember())) {
-                    remoteSchedule(trainerPerson.getId(), clientMember.getScheduleClient());
-                }
-                return trainerPerson;
+    public Trainer getTrainerPerson() {
+        if (trainerPerson != null) {
+            if (clientMember != null && "REGISTERED".equals(clientMember.getStatusMember())) {
+                remoteSchedule(trainerPerson.getId(), clientMember.getScheduleClient());
             }
-            return null;
+            return trainerPerson;
         }
+        return null;
+    }
 
 
     public void setTrainerPerson(Trainer trainerPerson) {
@@ -58,7 +61,8 @@ public class BIllDetail implements Serializable {
     }
 
     public double getTotal() {
-        return total = (((trainerPerson!=null)?trainerPerson.getPriceCoachHire():0) + product.getPriceCardClass());
+        return total = (((trainerPerson != null && clientMember.getStatusMember().equals("REGISTERING")) ? product.getPriceCardClass():
+                (clientMember.getStatusMember().equals("REGISTERED"))? trainerPerson.getPriceCoachHire() + product.getPriceCardClass() : 0));
     }
 
     public void setTotal(double total) {
@@ -66,7 +70,10 @@ public class BIllDetail implements Serializable {
     }
 
     public LocalDate getTimeExp() {
-        return GetValue.getTimeNow();
+        if (timeExp == null) {
+            return GetValue.getTimeNow();
+        }
+        return timeExp;
     }
 
     public void setTimeExp(LocalDate timeExp) {

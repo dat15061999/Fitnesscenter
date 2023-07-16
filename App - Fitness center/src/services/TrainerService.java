@@ -4,10 +4,7 @@ import eNum.eRole;
 import models.Product;
 import models.Trainer;
 import models.User;
-import utils.AppUtils;
-import utils.CRUD;
-import utils.GetValue;
-import utils.SerializationUtil;
+import utils.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -231,7 +228,7 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
                                 trainer.getId(), trainer.getName(), String.valueOf(trainer.getAge()), trainer.getPhone(),
                                 trainer.getGender(), trainer.getExp(), trainer.getLevel(), trainer.getSkill(),
                                 trainer.getDegree(), trainer.getCoachingStyle(), trainer.getSchedule(),
-                                trainer.getStatus(), trainer.getPriceCoachHire());
+                                trainer.getStatus(), CurrencyFormat.covertPriceToString(trainer.getPriceCoachHire()));
                     });
 
         }

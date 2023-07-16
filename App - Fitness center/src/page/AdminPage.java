@@ -4,6 +4,7 @@ import static services.AdminService.printHistoryLogin;
 import static services.BillService.confirmPayments;
 import static services.BillService.payments;
 import static view.BillView.billView;
+import static view.LoginView.loginUser;
 import static view.LoginView.loginView;
 import static view.ProductView.productView;
 import static view.UserView.userView;
@@ -34,7 +35,7 @@ public class AdminPage {
                 printHistoryLogin();
                 break;
             case 0:
-                loginView();
+                loginUser();
                 break;
         }
         adminPage();

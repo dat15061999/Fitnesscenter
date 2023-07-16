@@ -135,7 +135,7 @@ public class ClientService implements CRUD<Client>, Serializable {
 
     public static void clientPersonal(String userName) {
         if (clientList.stream().anyMatch(e -> e.getUsername().equals(userName))) {
-            Client client = getByUserName(userName);
+            Client client = getByUserNameCLient(userName);
             System.out.printf("| %-20s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s | %-12s |\n",
                     "Name", "Username", "Password", "Age", "Email", "Phone", "Address", "Gender", "Weight", "Height", "BMI", "Status", "Target", "Schedule", "Strength","Member Card");
             String formattedString = String.format("| %-20s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s | %-12s |\n",
@@ -245,7 +245,7 @@ public class ClientService implements CRUD<Client>, Serializable {
         System.out.println("               ===================================");
     }
 
-    public static Client getByUserName(String userName) {
+    public static Client getByUserNameCLient(String userName) {
         return clientList.stream()
                 .filter(e -> e.getUsername().equals(userName))
                 .findFirst()

@@ -3,6 +3,7 @@ import utils.GetValue;
 import static services.BillService.printTrainerSchedule;
 import static services.BillService.scheduleConfirm;
 import static services.TrainerService.*;
+import static view.LoginView.loginUser;
 import static view.LoginView.loginView;
 public class TrainerPage {
 
@@ -29,11 +30,11 @@ public class TrainerPage {
                 break;
             case 4:
                 System.out.println("Xac nhan lich huan luyen");
-                printTrainerSchedule(userName,"NONE");
+                printTrainerSchedule(userName,"CONFIRMING");
                 System.out.println();
                 printConfirmMenu();
                 choose = GetValue.getInt("Enter your choice: ");
-                scheduleConfirm(userName,"NONE",choose);
+                scheduleConfirm(userName,"CONFIRMING",choose);
                 break;
             case 5:
                 System.out.println("CHAM CONG HANG NGAY");
@@ -44,7 +45,7 @@ public class TrainerPage {
                 printTotalSalary(userName);
                 break;
             case 0:
-                loginView();
+                loginUser();
                 break;
             default:
                 trainerPage(userName);

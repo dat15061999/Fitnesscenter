@@ -1,4 +1,5 @@
 1. Công nghệ sử dụng: Ngôn ngữ lập trình Java
+
  - OPP
  
  - Storage: Serializable

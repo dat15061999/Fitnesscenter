@@ -1,10 +1,7 @@
 package services;
 
 import models.Bill;
-import utils.AppUtils;
-import utils.CRUD;
-import utils.GetValue;
-import utils.SerializationUtil;
+import utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +11,8 @@ import static page.TrainerPage.trainerPage;
 import static services.ClientService.*;
 import static services.ProductService.getProduct;
 import static services.TrainerService.getTrainer;
+import static utils.BillReport.calculaterMonthlyRevenue;
+import static utils.CurrencyFormat.covertPriceToString;
 import static view.ProductView.printProduct;
 
 public class BillService implements CRUD<Bill> {
@@ -59,11 +58,13 @@ public class BillService implements CRUD<Bill> {
             printProduct();
             bill.setProduct(getProduct(GetValue.getInt("Chon goi tap :")));
             bill.setTrainerPerson(getTrainer(bill.getClientMember().getScheduleClient(), bill.getProduct().getStatus()));
-            if (bill.getTrainerPerson() == null) {
+            if (bill.getTrainerPerson()== null) {
                 bill.setStatusCoach("NONE-COACH");
+            } else {
+                bill.setStatusCoach("CONFIRMING");
             }
-            bill.setStatusCoach("CONFIRMING");
             bill.setTimeExp(bill.getTimeExp());
+            bill.setTotal((bill.getTotal() != 0)? bill.getTotal():0);
             billList.add(bill);
             System.out.println("Dang ky thanh cong");
             save();
@@ -74,7 +75,7 @@ public class BillService implements CRUD<Bill> {
     public void delete(int idBill) {
         Bill billDelete = null;
         for (Bill bill : billList) {
-            if (idBill == bill.getId()) {
+            if (idBill == bill.getId() && bill.getStatus().equals("UNPAID")) {
                 billDelete = bill;
                 System.out.println("Xoa bill co id la " + idBill + " thanh cong!");
             }
@@ -163,7 +164,7 @@ public class BillService implements CRUD<Bill> {
             if (billList.stream()
                     .filter(e -> e.getTrainerPerson() != null)
                     .anyMatch(e -> e.getTrainerPerson()
-                            .getUsername().contains(userName))) {
+                            .getUsername().contains(userName) && e.getStatusCoach().equals(statusCoach))) {
                 System.out.printf("| %-20s | %-5s | %-15s | %-8s | %-8s | %-8s | %-20s | %-15s | %-10s | %-10s | %-10s | %-15s |\n",
                         "Name", "Age", "Phone", "Gender", "Weight", "Height", "BMI", "Status BMI", "Schedule", "Target", "Strength", "Status Member");
                 billList.stream().
@@ -177,8 +178,9 @@ public class BillService implements CRUD<Bill> {
                                     client.getClientMember().getTarget(), client.getClientMember().getStateOfStrength(), client.getClientMember().getStatusMember());
                         });
             }
-        } else
-            System.out.println("CHUA CO KHACH HANG DANG KY MOI");
+            else
+                System.out.println("CHUA CO KHACH HANG DANG KY MOI");
+        }
     }
 
     public static void scheduleConfirm(String userName, String statusClient, int choose) {
@@ -256,18 +258,31 @@ public class BillService implements CRUD<Bill> {
                     System.out.printf("%-20s: %s\n", "Họ và tên", e.getClientMember().getName());
                     System.out.printf("%-20s: %s\n", "Loại thẻ", e.getProduct().getNameCard());
                     System.out.printf("%-20s: %s\n", "Lịch huấn luyện", e.getClientMember().getScheduleClient());
-                    System.out.printf("%-20s: %s\n", "Huấn luyện viên", (e.getTrainerPerson() == null) ? "NONE" :
+                    System.out.printf("%-20s: %s\n", "Huấn luyện viên", (e.getTrainerPerson() == null) ? "NONE-COACH" :
                             (e.getStatusCoach().equals("CONFIRMING")) ? "DANG XAC NHAN" :
                                     (e.getStatusCoach().equals("NONE-COACH")) ? "NONE-COACH" :
                                             (e.getStatusCoach().equals("UNCONFIRMED")) ? "MOI BAN CHON LAI COACH!" :
                                                     e.getTrainerPerson().getName());
                     System.out.printf("%-20s: %s\n", "Ngày bắt đầu", GetValue.backFormatLocalDate(e.getTimeExp()));
                     System.out.printf("%-20s: %s\n", "Ngày kết thúc", GetValue.getPlusTime(e.getProduct().getExpiryDate(), e.getTimeExp()));
+                    System.out.printf("%-20s: %s\n", "Tổng đơn hàng", CurrencyFormat.covertPriceToString(
+                            e.getProduct().getPriceCardClass()+ ((e.getTrainerPerson() !=null)? e.getTrainerPerson().getPriceCoachHire():0)));
+                    System.out.printf("%-20s: %s\n", "Thanh toán", e.getStatus());
                 });
             } else {
                 System.out.println("CHUA DANG KY THE THANH VIEN!");
             }
 
+        }
+    }
+    public static void getRevenueAllYear() {
+        double[] monthlyRevenues = new double[12];
+        for (int i = 1; i <= 12; i++) {
+            monthlyRevenues[i-1] = calculaterMonthlyRevenue(billList, 2023, i);
+        }
+        System.out.println("Doanh thu từng tháng trong năm 2023:");
+        for (int i = 1; i <= 12; i++) {
+            System.out.printf("Tháng %-5d: %-20s\n", i, covertPriceToString(monthlyRevenues[i-1]));
         }
     }
 

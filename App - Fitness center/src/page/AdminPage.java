@@ -1,11 +1,9 @@
 package page;
 import utils.GetValue;
 import static services.AdminService.printHistoryLogin;
-import static services.BillService.confirmPayments;
-import static services.BillService.payments;
+import static services.BillService.*;
 import static view.BillView.billView;
 import static view.LoginView.loginUser;
-import static view.LoginView.loginView;
 import static view.ProductView.productView;
 import static view.UserView.userView;
 public class AdminPage {
@@ -67,6 +65,8 @@ public class AdminPage {
                 choose = GetValue.getInt("Nhap id muon thanh toan !");
                 confirmPayments(choose);
                 break;
+            case 3:
+                getRevenueAllYear();
             case 0:
                 adminPage();
                 break;
@@ -81,6 +81,7 @@ public class AdminPage {
         System.out.println("               | Options:                        |");
         System.out.println("               |        1. History payments      |");
         System.out.println("               |        2. Confirmed             |");
+        System.out.println("               |        3. Revenue by year       |");
         System.out.println("               |        0. Back on program       |");
         System.out.println("               ===================================");
     }

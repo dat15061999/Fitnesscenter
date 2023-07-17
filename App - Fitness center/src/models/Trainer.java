@@ -66,7 +66,11 @@ public class Trainer extends User implements Serializable {
     }
 
     public double getRevenueBonus() {
+        if (getSchedule() == null) {
+            return 0;
+        }
         int index = getSchedule().size();
+        if (revenueBonus==0) return 0;
         return (index == 2 )? 0 : (index == 1) ? revenueBonus /2 : revenueBonus;
     }
 
@@ -145,7 +149,8 @@ public class Trainer extends User implements Serializable {
     }
 
     public double getTotalPrice() {
-        return totalPrice = (((getSalary() + getRevenueBonus())/(26))*(getWorkDay().size()));
+        return totalPrice = (((getSalary() + getRevenueBonus())/(26))*((getWorkDay()!=null)?
+                getWorkDay().size():0));
     }
 
     public void setTotalPrice(double totalPrice) {
@@ -167,6 +172,6 @@ public class Trainer extends User implements Serializable {
     @Override
     public String toString() {
         return String.format("| %-4d | %-17s | %-10s | %-10s | %-8s | %-20s | %-10s | %-8s | %-20s | %-10s | %-20s | %-15s | %-15s | %-24s | %-10s | %-8s | %-10s | %-14s | %-14s | %-14s | %-14s | %-12s | %-14s | \n",
-                id, name, username, password.getPasscode(),String.valueOf(age), email, role, phone, address, gender, skill, degree, coachingStyle, getSchedule(),getStatus(), level, exp,covertPriceToString(priceCoach),covertPriceToString(getPriceCoachHire()),covertPriceToString(salary), covertPriceToString(getRevenueBonus()),workDay.size(), covertPriceToString(getTotalPrice()));
+                id, name, username, password.getPasscode(),String.valueOf(age), email, role, phone, address, gender, skill, degree, coachingStyle, ((getSchedule()!=null)?getSchedule():"NONE"),getStatus(), level, exp,covertPriceToString(priceCoach),covertPriceToString(getPriceCoachHire()),covertPriceToString(salary), covertPriceToString(getRevenueBonus()),(workDay!=null)?workDay.size():0, covertPriceToString(getTotalPrice()));
     }
 }

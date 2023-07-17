@@ -4,6 +4,7 @@ import utils.GetValue;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 
 import static services.TrainerService.remoteSchedule;
@@ -61,8 +62,12 @@ public class BIllDetail implements Serializable {
     }
 
     public double getTotal() {
-        return total = (((trainerPerson != null && clientMember.getStatusMember().equals("REGISTERING")) ? product.getPriceCardClass():
-                (clientMember.getStatusMember().equals("REGISTERED"))? trainerPerson.getPriceCoachHire() + product.getPriceCardClass() : 0));
+        if (trainerPerson != null) {
+            return product.getPriceCardClass();
+        } else {
+            return ((clientMember.getStatusMember().equals("REGISTERED")) ?
+                    trainerPerson.getPriceCoachHire() + product.getPriceCardClass() : 0);
+        }
     }
 
     public void setTotal(double total) {

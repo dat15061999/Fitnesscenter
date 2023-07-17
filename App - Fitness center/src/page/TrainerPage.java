@@ -9,7 +9,7 @@ public class TrainerPage {
 
     public static int choose;
     public static void main(String[] args) {
-
+            trainerPage("thanhpt");
     }
 
     public static void trainerPage(String userName) {
@@ -17,7 +17,7 @@ public class TrainerPage {
         choose = GetValue.getInt("Enter your choice: ");
         switch (choose) {
             case 1:
-                System.out.println("Thong tin tai khoan");
+                System.out.println("THÔNG TIN COACH");
                 printTrainerPersonal(userName);
                 break;
             case 2:
@@ -37,7 +37,6 @@ public class TrainerPage {
                 scheduleConfirm(userName,"CONFIRMING",choose);
                 break;
             case 5:
-                System.out.println("CHAM CONG HANG NGAY");
                 confirmWorkDay(userName);
                 break;
             case 6:

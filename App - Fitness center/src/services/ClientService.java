@@ -62,15 +62,20 @@ public class ClientService implements CRUD<Client>, Serializable {
     @Override
     public void delete(int idClient) {
         Client clientDelete = null;
-        for (Client client : clientList) {
-            if (idClient == client.getId()) {
-                clientDelete = client;
-                System.out.println("Xoa Client co id la " + idClient + " thanh cong.");
-                break;
+        if (clientList.stream().anyMatch(e->e.getId()==idClient && e.getStatusMember().equals("REGISTERED"))) {
+            for (Client client : clientList) {
+                if (idClient == client.getId() && client.getStatusMember().equals("REGISTERED")) {
+                    clientDelete = client;
+                    System.out.println("Xoa Client co id la " + idClient + " thanh cong.");
+                    break;
+                }
             }
+            clientList.remove(clientDelete);
+            save();
+        } else {
+            System.out.println("XOA KHACH HANG CO ID LA " + idClient + " KHONG THANH CONG");
         }
-        clientList.remove(clientDelete);
-        save();
+
     }
 
     @Override
@@ -136,15 +141,18 @@ public class ClientService implements CRUD<Client>, Serializable {
     public static void clientPersonal(String userName) {
         if (clientList.stream().anyMatch(e -> e.getUsername().equals(userName))) {
             Client client = getByUserNameCLient(userName);
-            System.out.printf("| %-20s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s | %-12s |\n",
-                    "Name", "Username", "Password", "Age", "Email", "Phone", "Address", "Gender", "Weight", "Height", "BMI", "Status", "Target", "Schedule", "Strength","Member Card");
-            String formattedString = String.format("| %-20s | %-10s | %-10s |  %-4s  | %-20s | %-10s | %-20s | %-8s | %-8s | %-10s | %-15s | %-15s | %-10s | %-10s | %-10s | %-12s |\n",
-                    client.getName(), client.getUsername(), client.getPassword().getPasscode(),
-                    String.valueOf(client.getAge()), client.getEmail(), client.getPhone(),
-                    client.getAddress(), client.getGender(), client.getWeight(), client.getHeight(),
-                    String.format("%.6f", client.getBmi()), client.getStatusBmi(), client.getTarget(),
-                    client.getScheduleClient(), client.getStateOfStrength(),client.getStatusMember());
-            System.out.println(formattedString);
+            System.out.println("THÔNG TIN KHÁCH HÀNG");
+            System.out.printf("%-20s: %s\n", "Họ và tên", client.getName());
+            System.out.printf("%-20s: %s\n", "Số điện thoại", client.getPhone());
+            System.out.printf("%-20s: %s\n", "Email", client.getEmail());
+            System.out.printf("%-20s: %s\n", "Giới tính", client.getGender());
+            System.out.printf("%-20s: %s\n", "Địa chỉ", client.getAddress());
+            System.out.printf("%-20s: %s\n", "Cân nặng (kg)", client.getWeight());
+            System.out.printf("%-20s: %s\n", "Chiều cao (m)", client.getHeight());
+            System.out.printf("%-20s: %s\n", "BMI", client.getStatusBmi());
+            System.out.printf("%-20s: %s\n", "Mục tiêu", client.getTarget());
+            System.out.printf("%-20s: %s\n", "Lịch trình", client.getScheduleClient());
+            System.out.printf("%-20s: %s\n", "Sức khỏe", client.getStateOfStrength());
         }
     }
 

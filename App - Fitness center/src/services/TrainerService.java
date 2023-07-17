@@ -1,6 +1,7 @@
 package services;
 
 import eNum.eRole;
+import models.Client;
 import models.Product;
 import models.Trainer;
 import models.User;
@@ -14,6 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static page.TrainerPage.choose;
+import static page.TrainerPage.trainerPage;
 import static utils.CurrencyFormat.covertPriceToString;
 import static view.BillView.billView;
 
@@ -50,7 +52,6 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
         trainer.setGender(GetValue.getGender("Chon gioi tinh"));
         trainer.setRole(eRole.PT.getName());
         trainer.setSalary(GetValue.getInt("Nhap luong co ban"));
-        trainer.setRevenueBonus(GetValue.getDou("Hoa hong"));
         trainer.setTotalPrice(trainer.getTotalPrice());
         trainer.setExp(GetValue.getDou("Nhap kinh nghiem lam viec"));
         trainer.setLevel(trainer.getLevel());
@@ -59,21 +60,27 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
         trainer.setCoachingStyle(GetValue.getStyle("Chon phong cach huan luyen"));
         trainer.setSchedule(GetValue.getSchedule("Chon lich trinh lam viec"));
         trainerList.add(trainer);
+        System.out.println("THEM HUAN LUYEN VIEN THANH CONG");
         save();
     }
 
     @Override
     public void delete(int idTrainer) {
         Trainer trainerDelete = null;
-        for (Trainer trainer : trainerList) {
-            if (idTrainer == trainer.getId()) {
-                trainerDelete = trainer;
-                System.out.println("Xoa trainer co id la " + idTrainer + " thanh cong.");
-                break;
+        if (trainerList.stream().anyMatch(e->e.getId()==idTrainer && e.getSchedule().size()==2)) {
+            for (Trainer trainer : trainerList) {
+                if (idTrainer == trainer.getId() && trainer.getSchedule().size()==2) {
+                    trainerDelete = trainer;
+                    System.out.println("Xoa COACH co ID la " + idTrainer + " thanh cong.");
+                    break;
+                }
             }
+            trainerList.remove(trainerDelete);
+            save();
+        } else {
+            System.out.println("XOA ID COACH KHONG THANH CONG -");
         }
-        trainerList.remove(trainerDelete);
-        save();
+
     }
 
     @Override
@@ -82,7 +89,7 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
             for (Trainer trainer : trainerList) {
                 if (idTrainer == trainer.getId()) {
                     System.out.println("1. Sua thong tin trainer");
-                    System.out.println("2. Sua ky nang trainer");
+                    System.out.println("2. Sua lich trinh va ky nang trainer");
                     switch (GetValue.getInt("Enter your choice :")) {
                         case 1:
                             trainer.setName(GetValue.getString("Nhap ten moi :"));
@@ -94,16 +101,15 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
                             trainer.setAddress(GetValue.getString("Nhap dia chi"));
                             trainer.setEmail(GetValue.getString("Nhap emali :"));
                             trainer.setGender(GetValue.getGender("Nhap gioi tinh :"));
-                            System.out.println("Thay doi thong tin Trainer thanh cong");
+                            System.out.println("Thay doi thong tin COACH thanh cong");
                             break;
                         case 2:
                             trainer.setSkill(GetValue.getString("Nhap ky nang"));
                             trainer.setDegree(GetValue.getString("Nhap bang cap"));
                             trainer.setCoachingStyle(GetValue.getStyle("Chon phong cach"));
-                            trainer.setSchedule(GetValue.getSchedule("Chon lich trinh"));
                             trainer.setExp(GetValue.getDou("Nhap kinh nghiem"));
-                            trainer.setRevenueBonus(GetValue.getInt("Nhap hoa hong"));
-                            System.out.println("Thay doi ky nang Trainer thanh cong");
+                            trainer.setSchedule(GetValue.getSchedule("Chon lich trinh"));
+                            System.out.println("Thay doi lich trinh COACH thanh cong");
                             break;
                     }
                 }
@@ -139,16 +145,19 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
 
     public static void printTrainerPersonal(String userName) {
         if (trainerList != null) {
-            for (Trainer trainer : trainerList) {
-                if (trainer.getUsername().equals(userName)) {
-                    System.out.printf("| %-17s | %-10s | %-10s | %-8s | %-20s | %-8s | %-20s | %-10s | %-20s | %-15s | %-15s | %-30s | %-10s | %-8s | %-10s | %-12s | %-12s | %-20s | \n",
-                            "Name", "Username", "Password", "Age", "Email", "Phone", "Address", "Gender", "Skill", "Degree", "CoachingStyle", "Schedule", "Status", "Level", "Experience", "Bonus", "Salary", "TotalPrice");
-                    String formattedString = String.format("| %-17s | %-10s | %-10s | %-8s | %-20s | %-8s | %-20s | %-10s | %-20s | %-15s | %-15s | %-30s | %-10s | %-8s | %-10s | %-12s | %-12s | %-20s | \n",
-                            trainer.getName(), trainer.getUsername(), trainer.getPassword().getPasscode(), String.valueOf(trainer.getAge()), trainer.getEmail(), trainer.getPhone()
-                            , trainer.getAddress(), trainer.getGender(), trainer.getSkill(), trainer.getDegree(), trainer.getCoachingStyle(), trainer.getSchedule(), trainer.getStatus(), trainer.getLevel()
-                            , trainer.getExp(), covertPriceToString(trainer.getSalary()), covertPriceToString(trainer.getRevenueBonus()), covertPriceToString(trainer.getTotalPrice()));
-                    System.out.println(formattedString);
-                }
+            if (trainerList.stream().anyMatch(e -> e.getUsername().equals(userName))) {
+                Trainer trainer = getByUserName(userName);
+                System.out.printf("%-20s: %s\n", "Họ và tên", trainer.getName());
+                System.out.printf("%-20s: %s\n", "Số điện thoại", trainer.getPhone());
+                System.out.printf("%-20s: %s\n", "Email", trainer.getEmail());
+                System.out.printf("%-20s: %s\n", "Giới tính", trainer.getGender());
+                System.out.printf("%-20s: %s\n", "Địa chỉ", trainer.getAddress());
+                System.out.printf("%-20s: %s\n", "Kỹ năng", trainer.getSkill());
+                System.out.printf("%-20s: %s\n", "Bằng cấp", trainer.getDegree());
+                System.out.printf("%-20s: %s\n", "Phong cách", trainer.getCoachingStyle());
+                System.out.printf("%-20s: %s\n", "Lịch trình", trainer.getSchedule());
+                System.out.printf("%-20s: %s\n", "Kinh nghiem", trainer.getExp());
+                System.out.printf("%-20s: %s\n", "Trạng thái", trainer.getStatus());
             }
         } else {
             System.out.println("NUll");
@@ -159,8 +168,9 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
         if (!trainerList.isEmpty()) {
             for (Trainer trainer : trainerList) {
                 if (trainer.getUsername().equals(userName)) {
-                    System.out.println("1. Cap nhat thong tin");
-                    System.out.println("2. Thay doi lich lam viec");
+                    System.out.println("1. Update information");
+                    System.out.println("2. Change Schedule Work");
+                    System.out.println("0. Back to program");
                     choose = GetValue.getInt("Enter your choice :");
                     switch (choose) {
                         case 1:
@@ -174,10 +184,15 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
                             trainer.setEmail(GetValue.getString("Nhap emali :"));
                             trainer.setGender(GetValue.getGender("Nhap gioi tinh :"));
                             System.out.println("Thay doi thong tin thanh cong");
+                            save();
                             break;
                         case 2:
                             trainer.setSchedule(GetValue.getSchedule("Chon lich trinh"));
                             System.out.println("Thay doi lich trinh lam viec thanh cong");
+                            save();
+                            break;
+                        case 0:
+                            trainerPage(userName);
                             break;
                         default:
                             changeTrainerInf(userName);
@@ -187,7 +202,6 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
                 }
 
             }
-            save();
         }
     }
 
@@ -271,16 +285,22 @@ public class TrainerService implements CRUD<Trainer>, Serializable {
             for (Trainer trainer : trainerList) {
                 if (trainer.getUsername().equals(userName)) {
                     List<Integer> workDay = trainer.getWorkDay();
-                    List<Integer> newWorkDay = new ArrayList<>(workDay);
-                    newWorkDay.add(GetValue.getDayNow());
-                    trainer.setWorkDay(newWorkDay);
-                    System.out.println("CHAM CONG THANH CONG");
+                    int dayNow = GetValue.getDayNow();
+                    if (!workDay.contains(dayNow)) {
+                        List<Integer> newWorkDay = new ArrayList<>(workDay);
+                        newWorkDay.add(dayNow);
+                        trainer.setWorkDay(newWorkDay);
+                        System.out.println("CHAM CONG THANH CONG");
+                        save();
+                    }  else {
+                        System.out.println("ĐÃ CHẤM CÔNG TRONG NGÀY HÔM NAY");
+                    }
                     break;
                 }
             }
-            save();
+        } else {
+            System.out.println("KHÔNG TÌM THẤY NHÂN VIÊN TRONG HỆ THỐNG");
         }
-        System.out.println("CHAM CONG KHONG THANH CONG");
 
     }
 

@@ -12,7 +12,7 @@ public class Main {
         initProduct();
         initBill();
         billView();
-        //trainerPage("thanhpt");
+        trainerPage("thanhpt");
 
 
     }

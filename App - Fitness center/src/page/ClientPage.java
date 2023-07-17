@@ -59,8 +59,8 @@ public class ClientPage {
         System.out.println("               =====================================");
         System.out.println("               | Options:                          |");
         System.out.println("               |        1. Register member         |");
-        System.out.println("               |        2. Change COACH            |");
         System.out.println("               |        2. Change product          |");
+        System.out.println("               |        3. Change COACH            |");
         System.out.println("               |        0. Back to program         |");
         System.out.println("               =====================================");
     }
@@ -72,10 +72,10 @@ public class ClientPage {
                 registerMemberCard(userName, new Bill());
                 break;
             case 2:
-                changeCoach(userName);
+                changeProduct(userName);
                 break;
             case 3:
-                changeProduct(userName);
+                changeCoach(userName);
                 break;
             case 0:
                 clientPage(userName);
